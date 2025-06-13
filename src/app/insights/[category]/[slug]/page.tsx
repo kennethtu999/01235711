@@ -2,7 +2,6 @@ import { getPostBySlug, getAllPosts } from '@/lib/content'
 import { Badge } from '@/components/ui/badge'
 import { notFound } from 'next/navigation'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
-import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 
@@ -19,9 +18,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { category: string; slug: string }
+  params: Promise<{ category: string; slug: string }>
 }): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug, params.category)
+  const resolvedParams = await params
+  const post = await getPostBySlug(resolvedParams.slug, resolvedParams.category)
 
   if (!post) {
     return {
@@ -49,12 +49,14 @@ export async function generateMetadata({
   }
 }
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: { category: string; slug: string }
-}) {
-  const post = await getPostBySlug(params.slug, params.category)
+type Props = {
+  params: Promise<{ category: string; slug: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function ArticlePage({ params, searchParams }: Props) {
+  const [resolvedParams] = await Promise.all([params, searchParams])
+  const post = await getPostBySlug(resolvedParams.slug, resolvedParams.category)
 
   if (!post) {
     notFound()
@@ -73,8 +75,8 @@ export default async function ArticlePage({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/insights/${params.category}`}>
-              {params.category}
+            <BreadcrumbLink href={`/insights/${resolvedParams.category}`}>
+              {resolvedParams.category}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -88,7 +90,7 @@ export default async function ArticlePage({
         <h1 className="text-4xl font-bold">{post.title}</h1>
         <p className="text-xl text-muted-foreground">{post.description}</p>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary">{post.category}</Badge>
+          <Badge variant="secondary">{resolvedParams.category}</Badge>
           {post.tags.map((tag) => (
             <Badge key={tag} variant="outline">
               {tag}

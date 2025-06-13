@@ -1,50 +1,37 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { cn } from '@/lib/utils'
-import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
 
 interface MDXComponentsProps {
-  className?: string
-  [key: string]: any
+  children: React.ReactNode;
+  className?: string;
+  [key: string]: unknown;
 }
 
-const components = {
-  h1: ({ className, ...props }: MDXComponentsProps) => (
-    <h1
-      className={cn(
-        'mt-2 scroll-m-20 text-4xl font-bold tracking-tight',
-        className
-      )}
-      {...props}
-    />
+interface MDXLinkProps extends MDXComponentsProps {
+  href: string;
+}
+
+interface MDXImageProps extends MDXComponentsProps {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+}
+
+export const MDXComponents = {
+  h1: ({ children, className }: MDXComponentsProps) => (
+    <h1 className={`mt-8 mb-4 text-4xl font-bold ${className || ''}`}>{children}</h1>
   ),
-  h2: ({ className, ...props }: MDXComponentsProps) => (
-    <h2
-      className={cn(
-        'mt-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0',
-        className
-      )}
-      {...props}
-    />
+  h2: ({ children, className }: MDXComponentsProps) => (
+    <h2 className={`mt-8 mb-4 text-3xl font-semibold ${className || ''}`}>{children}</h2>
   ),
-  h3: ({ className, ...props }: MDXComponentsProps) => (
-    <h3
-      className={cn(
-        'mt-8 scroll-m-20 text-2xl font-semibold tracking-tight',
-        className
-      )}
-      {...props}
-    />
+  h3: ({ children, className }: MDXComponentsProps) => (
+    <h3 className={`mt-6 mb-4 text-2xl font-semibold ${className || ''}`}>{children}</h3>
   ),
-  h4: ({ className, ...props }: MDXComponentsProps) => (
-    <h4
-      className={cn(
-        'mt-8 scroll-m-20 text-xl font-semibold tracking-tight',
-        className
-      )}
-      {...props}
-    />
+  h4: ({ children, className }: MDXComponentsProps) => (
+    <h4 className={`mt-6 mb-4 text-xl font-semibold ${className || ''}`}>{children}</h4>
   ),
   h5: ({ className, ...props }: MDXComponentsProps) => (
     <h5
@@ -64,96 +51,63 @@ const components = {
       {...props}
     />
   ),
-  a: ({ className, ...props }: MDXComponentsProps) => (
-    <Link
-      className={cn('font-medium underline underline-offset-4', className)}
-      {...props}
-    />
+  p: ({ children, className }: MDXComponentsProps) => (
+    <p className={`mb-4 leading-7 ${className || ''}`}>{children}</p>
   ),
-  p: ({ className, ...props }: MDXComponentsProps) => (
-    <p
-      className={cn('leading-7 [&:not(:first-child)]:mt-6', className)}
-      {...props}
-    />
+  a: ({ children, className, href }: MDXLinkProps) => (
+    <a href={href} className={`text-primary underline underline-offset-4 ${className || ''}`}>
+      {children}
+    </a>
   ),
-  ul: ({ className, ...props }: MDXComponentsProps) => (
-    <ul className={cn('my-6 ml-6 list-disc', className)} {...props} />
+  ul: ({ children, className }: MDXComponentsProps) => (
+    <ul className={`my-6 ml-6 list-disc [&>li]:mt-2 ${className || ''}`}>{children}</ul>
   ),
-  ol: ({ className, ...props }: MDXComponentsProps) => (
-    <ol className={cn('my-6 ml-6 list-decimal', className)} {...props} />
+  ol: ({ children, className }: MDXComponentsProps) => (
+    <ol className={`my-6 ml-6 list-decimal [&>li]:mt-2 ${className || ''}`}>{children}</ol>
   ),
-  li: ({ className, ...props }: MDXComponentsProps) => (
-    <li className={cn('mt-2', className)} {...props} />
+  li: ({ children, className }: MDXComponentsProps) => (
+    <li className={className}>{children}</li>
   ),
-  blockquote: ({ className, ...props }: MDXComponentsProps) => (
-    <blockquote
-      className={cn(
-        'mt-6 border-l-2 pl-6 italic text-muted-foreground',
-        className
-      )}
-      {...props}
-    />
+  blockquote: ({ children, className }: MDXComponentsProps) => (
+    <blockquote className={`mt-6 border-l-2 pl-6 italic ${className || ''}`}>{children}</blockquote>
   ),
-  img: ({
-    className,
-    alt,
-    ...props
-  }: MDXComponentsProps & { alt: string }) => (
+  img: ({ src, alt, className, width, height }: MDXImageProps) => (
     <Image
-      className={cn('rounded-md object-cover', className)}
+      src={src}
       alt={alt}
-      {...props}
+      width={width || 1200}
+      height={height || 630}
+      className={`rounded-md ${className || ''}`}
     />
   ),
-  hr: ({ ...props }: MDXComponentsProps) => (
-    <hr className="my-4 md:my-8" {...props} />
-  ),
-  table: ({ className, ...props }: MDXComponentsProps) => (
+  hr: () => <hr className="my-8" />,
+  table: ({ children, className }: MDXComponentsProps) => (
     <div className="my-6 w-full overflow-y-auto">
-      <table className={cn('w-full', className)} {...props} />
+      <table className={`w-full ${className || ''}`}>{children}</table>
     </div>
   ),
-  tr: ({ className, ...props }: MDXComponentsProps) => (
-    <tr
-      className={cn('m-0 border-t p-0 even:bg-muted', className)}
-      {...props}
-    />
+  tr: ({ children, className }: MDXComponentsProps) => (
+    <tr className={`m-0 border-t p-0 even:bg-muted ${className || ''}`}>{children}</tr>
   ),
-  th: ({ className, ...props }: MDXComponentsProps) => (
-    <th
-      className={cn(
-        'border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right',
-        className
-      )}
-      {...props}
-    />
+  th: ({ children, className }: MDXComponentsProps) => (
+    <th className={`border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right ${className || ''}`}>
+      {children}
+    </th>
   ),
-  td: ({ className, ...props }: MDXComponentsProps) => (
-    <td
-      className={cn(
-        'border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right',
-        className
-      )}
-      {...props}
-    />
+  td: ({ children, className }: MDXComponentsProps) => (
+    <td className={`border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right ${className || ''}`}>
+      {children}
+    </td>
   ),
-  pre: ({ className, ...props }: MDXComponentsProps) => (
-    <pre
-      className={cn(
-        'mb-4 mt-6 overflow-x-auto rounded-lg bg-black p-4',
-        className
-      )}
-      {...props}
-    />
+  pre: ({ children, className }: MDXComponentsProps) => (
+    <pre className={`mt-6 mb-4 overflow-x-auto rounded-lg bg-black p-4 ${className || ''}`}>
+      {children}
+    </pre>
   ),
-  code: ({ className, ...props }: MDXComponentsProps) => (
-    <code
-      className={cn(
-        'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm',
-        className
-      )}
-      {...props}
-    />
+  code: ({ children, className }: MDXComponentsProps) => (
+    <code className={`relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm ${className || ''}`}>
+      {children}
+    </code>
   ),
   Card: ({ className, ...props }: MDXComponentsProps) => (
     <Card className={cn('mt-6', className)} {...props} />
@@ -166,4 +120,4 @@ const components = {
   ),
 }
 
-export default components 
+export default MDXComponents 

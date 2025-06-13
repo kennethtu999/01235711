@@ -1,6 +1,10 @@
-# Allow all crawlers
+# *
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://your-domain.com/sitemap.xml 
+# Host
+Host: https://your-domain.com
+
+# Sitemaps
+Sitemap: https://your-domain.com/sitemap.xml
+Sitemap: https://your-domain.com/server-sitemap.xml

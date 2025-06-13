@@ -1,21 +1,21 @@
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: "Get in touch with us. We'd love to hear from you.",
+  description: "Get in touch with us. We&apos;d love to hear from you.",
   openGraph: {
     title: 'Contact',
-    description: "Get in touch with us. We'd love to hear from you.",
+    description: "Get in touch with us. We&apos;d love to hear from you.",
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Contact',
-    description: "Get in touch with us. We'd love to hear from you.",
+    description: "Get in touch with us. We&apos;d love to hear from you.",
   },
 }
 
@@ -26,7 +26,10 @@ export default function ContactPage() {
         <section className="space-y-4">
           <h1 className="text-4xl font-bold">Contact Us</h1>
           <p className="text-xl text-muted-foreground">
-            Have questions or want to get in touch? We'd love to hear from you.
+            Have a question or want to get in touch? I&apos;d love to hear from you.
+          </p>
+          <p className="text-xl text-muted-foreground">
+            Feel free to reach out if you&apos;d like to collaborate or just say hello.
           </p>
         </section>
 
@@ -34,7 +37,7 @@ export default function ContactPage() {
           <CardHeader>
             <CardTitle>Send us a message</CardTitle>
             <CardDescription>
-              Fill out the form below and we'll get back to you as soon as possible.
+              Fill out the form below and we&apos;ll get back to you as soon as possible.
             </CardDescription>
           </CardHeader>
           <CardContent>

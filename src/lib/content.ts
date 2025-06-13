@@ -5,6 +5,7 @@ import { compileMDX } from 'next-mdx-remote/rsc'
 import rehypePrismPlus from 'rehype-prism-plus'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
+import { ReactNode } from 'react'
 
 const contentDirectory = path.join(process.cwd(), 'content')
 
@@ -16,7 +17,7 @@ export type Post = {
   category: string
   tags: string[]
   coverImage: string
-  content: string
+  content: ReactNode
 }
 
 export async function getPostBySlug(slug: string, category: string): Promise<Post | null> {

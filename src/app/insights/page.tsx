@@ -5,7 +5,6 @@ import Link from 'next/link'
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -35,9 +34,10 @@ const POSTS_PER_PAGE = 9
 export default async function InsightsPage({
   searchParams,
 }: {
-  searchParams: { page?: string }
+  searchParams: Promise<{ page?: string }>
 }) {
-  const currentPage = Number(searchParams.page) || 1
+  const resolvedParams = await searchParams
+  const currentPage = Number(resolvedParams.page) || 1
   const posts = await getAllPosts()
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE
